@@ -3,8 +3,6 @@ cd cmake-build
 set "VS_VERSION=14.0"
 set "VS_MAJOR=14"
 set "VS_YEAR=2015"
-REM set "CC=%PREFIX%\\Library\\bin\\cl.exe"
-REM set "CXX=%PREFIX%\\Library\\bin\\cl.exe"
 cmake -DBUILD_SHARED_LIBS=ON ^
       -DCMAKE_BUILD_TYPE=Release ^
       -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
