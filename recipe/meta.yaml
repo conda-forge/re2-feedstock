@@ -22,9 +22,9 @@ requirements:
   build:
     - toolchain
     - cmake >=3.4
-    - vc 15  # [win]
+    - vc 14  # [win]
   run:
-    - vc 15  # [win]
+    - vc 14  # [win]
 
 test:
   commands:
