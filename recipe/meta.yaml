@@ -16,13 +16,15 @@ source:
 
 build:
   number: 0
-  skip: True  # [not py35]
   detect_binary_files_with_prefix: True
 
 requirements:
   build:
     - toolchain
     - cmake >=3.4
+    - vc 15  # [win]
+  run:
+    - vc 15  # [win]
 
 test:
   commands:
