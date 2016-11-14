@@ -16,13 +16,18 @@ source:
 
 build:
   number: 0
-  skip: True  # [not py35]
   detect_binary_files_with_prefix: True
+  msvc_compiler: 14.0  # [win]
+  features:
+    - vc14  # [win]
 
 requirements:
   build:
     - toolchain
     - cmake >=3.4
+    - vc 14  # [win]
+  run:
+    - vc 14  # [win]
 
 test:
   commands:
