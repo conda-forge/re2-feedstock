@@ -13,19 +13,17 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 1
   detect_binary_files_with_prefix: True
-  msvc_compiler: 14.0  # [win]
-  features:
-    - vc14  # [win]
+  skip: True  # [vc<14]  # [win]
 
 requirements:
   build:
-    - toolchain
     - cmake >=3.4
-    - vc 14  # [win]
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+  host:
   run:
-    - vc 14  # [win]
 
 test:
   commands:
