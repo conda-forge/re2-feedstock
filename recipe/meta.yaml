@@ -1,7 +1,7 @@
 {% set name = "re2" %}
-{% set version = "2018-07-01" %}
+{% set version = "2018-08-01" %}
 {% set dotversion = version.replace('-', '.') %}
-{% set sha256 = "803c7811146edeef8f91064de37c6f19136ff01a2a8cdb3230e940b2fd9f07fe" %}
+{% set sha256 = "7c995c91c12201e61738f35cf4d1362758894d674a1e71dd116cafb4d860b752" %}
 
 package:
   name: {{ name|lower }}
@@ -13,7 +13,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 1
+  number: 0
   detect_binary_files_with_prefix: True
   skip: True  # [vc<14]  # [win]
 
