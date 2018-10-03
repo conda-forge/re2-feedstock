@@ -1,3 +1,7 @@
+:: Remove -GL from CXXFLAGS as this causes a fatal error
+set "CFLAGS= -MD"
+set "CXXFLAGS= -MD"
+
 mkdir -p cmake-build
 cd cmake-build
 set "VS_VERSION=14.0"
