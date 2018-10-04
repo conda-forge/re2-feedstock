@@ -34,5 +34,5 @@ if errorlevel 1 exit 1
 nmake
 if errorlevel 1 exit 1
 
-copy Release\re2.lib %LIBRARY_DIR%\re2_static.lib
+copy Release\re2.lib %LIBRARY_LIB%\re2_static.lib
 if errorlevel 1 exit 1
