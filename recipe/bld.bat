@@ -1,3 +1,5 @@
+@echo on
+
 :: Remove -GL from CXXFLAGS as this causes a fatal error
 set "CFLAGS= -MD"
 set "CXXFLAGS= -MD"
