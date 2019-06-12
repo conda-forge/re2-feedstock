@@ -23,6 +23,7 @@ build:
 requirements:
   build:
     - cmake >=3.4
+    - make
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
