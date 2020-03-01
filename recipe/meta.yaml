@@ -1,7 +1,7 @@
 {% set name = "re2" %}
-{% set version = "2020-01-01" %}
+{% set version = "2020-03-01" %}
 {% set dotversion = version.replace('-', '.') %}
-{% set sha256 = "7509a34636b7dd2966f7a34440cee1153983fd61a4bf8f759a4f7781b9ceebaf" %}
+{% set sha256 = "192a2855e9853091ad3f4c40c03b56d6f5d1fd4cb98ba07101c92f313d0398dc" %}
 
 package:
   name: {{ name|lower }}
@@ -14,7 +14,7 @@ source:
 
 build:
   number: 0
-  detect_binary_files_with_prefix: True
+  detect_binary_files_with_prefix: true
   skip: true  # [win32]
   skip: true  # [win and py<35]
   features:
