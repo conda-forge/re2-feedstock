@@ -13,12 +13,11 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 1
   detect_binary_files_with_prefix: true
-  skip: true  # [win32]
-  skip: true  # [win and py<35]
-  features:
-    - vc14  # [win and py>=35]
+  skip: true  # [win and vc<14]
+  run_exports:
+    - {{ pin_subpackage("re2", max_pin="x.x.x") }}
 
 requirements:
   build:
@@ -43,7 +42,7 @@ test:
 
 about:
   home: https://github.com/google/re2/
-  license: BSD 3-clause
+  license: BSD-3-Clause
   license_file: LICENSE
   summary: |
     RE2 is a fast, safe, thread-friendly alternative to backtracking regular expression
