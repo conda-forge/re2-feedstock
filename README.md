@@ -3,7 +3,7 @@ About re2
 
 Home: https://github.com/google/re2/
 
-Package license: BSD 3-clause
+Package license: BSD-3-Clause
 
 Feedstock license: BSD 3-Clause
 
