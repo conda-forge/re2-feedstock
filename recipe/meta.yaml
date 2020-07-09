@@ -13,9 +13,8 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 1
   detect_binary_files_with_prefix: true
-  skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage("re2", max_pin="x.x.x") }}
 
@@ -32,12 +31,12 @@ test:
   commands:
     - test -f ${PREFIX}/lib/libre2.so  # [linux]
     - test -f ${PREFIX}/lib/libre2.dylib  # [osx]
-    - test -f ${PREFIX}/lib/libre2.a  # [unix]
+    - test ! -f ${PREFIX}/lib/libre2.a  # [unix]
     - test -f ${PREFIX}/lib/pkgconfig/re2.pc  # [unix]
     - test -f ${PREFIX}/include/re2/re2.h  # [unix]
     - if not exist %PREFIX%\\Library\\include\\re2\\re2.h exit 1  # [win]
     - if not exist %PREFIX%\\Library\\lib\\re2.lib exit 1  # [win]
-    - if not exist %PREFIX%\\Library\\lib\\re2_static.lib exit 1  # [win]
+    - if exist %PREFIX%\\Library\\lib\\re2_static.lib exit 1  # [win]
     - if not exist %PREFIX%\\Library\\bin\\re2.dll exit 1  # [win]
 
 about:
