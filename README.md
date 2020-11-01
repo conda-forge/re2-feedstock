@@ -5,13 +5,13 @@ Home: https://github.com/google/re2/
 
 Package license: BSD-3-Clause
 
-Feedstock license: BSD-3-Clause
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/re2-feedstock/blob/master/LICENSE.txt)
 
 Summary: RE2 is a fast, safe, thread-friendly alternative to backtracking regular expression
 engines like those used in PCRE, Perl, and Python. It is a C++ library.
 
 
-
+Development: https://github.com/google/re2/
 
 Current build status
 ====================
