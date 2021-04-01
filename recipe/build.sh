@@ -1,6 +1,10 @@
 #!/bin/bash
 set -ex
 
+if [[ "${target_platform}" == osx-* ]]; then
+  export CXXFLAGS="${CXXFLAGS} -DTARGET_OS_OSX=1"
+fi
+
 mkdir build-cmake
 pushd build-cmake
 cmake ${CMAKE_ARGS} -GNinja \
