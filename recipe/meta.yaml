@@ -1,7 +1,7 @@
 {% set name = "re2" %}
-{% set version = "2020-11-01" %}
+{% set version = "2021-04-01" %}
 {% set dotversion = version.replace('-', '.') %}
-{% set sha256 = "8903cc66c9d34c72e2bc91722288ebc7e3ec37787ecfef44d204b2d6281954d7" %}
+{% set sha256 = "358aedf71dbf26506848905f5d4417b7adba5cf44d3bbcf70bf4ef68ccb0871e" %}
 
 package:
   name: {{ name|lower }}
