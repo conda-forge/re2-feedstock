@@ -1,5 +1,5 @@
 {% set name = "re2" %}
-{% set version = "2022-06-01" %}
+{% set version = "2023-02-01" %}
 {% set dotversion = version.replace('-', '.') %}
 
 package:
@@ -8,10 +8,10 @@ package:
 
 source:
   url: http://github.com/google/{{ name }}/archive/{{ version }}.tar.gz
-  sha256: f89c61410a072e5cbcf8c27e3a778da7d6fd2f2b5b1445cd4f4508bee946ab0f
+  sha256: cbce8b7803e856827201a132862e41af386e7afd9cc6d9a9bc7a4fa4d8ddbdde
 
 build:
-  number: 1
+  number: 0
   detect_binary_files_with_prefix: true
   run_exports:
     - {{ pin_subpackage("re2", max_pin="x.x.x") }}
