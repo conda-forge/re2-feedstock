@@ -1,10 +1,13 @@
 {% set name = "re2" %}
 {% set version = "2023-02-01" %}
 {% set dotversion = version.replace('-', '.') %}
+# switching from C++14 to C++17 unfortunately introduces a different ABI, see #61;
+# create a fake version bump so we can migrate the new version safely
+{% set abi_bump_version = dotversion.replace('.01', '.02') %}
 
 package:
   name: {{ name|lower }}
-  version: {{ dotversion }}
+  version: {{ abi_bump_version }}
 
 source:
   url: http://github.com/google/{{ name }}/archive/{{ version }}.tar.gz
