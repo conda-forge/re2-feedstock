@@ -30,6 +30,13 @@ requirements:
   run:
 
 test:
+  requires:
+    - {{ compiler('cxx') }}
+    - cmake
+    - libabseil
+    - ninja
+  files:
+    - cmake_test/
   commands:
     - test -f ${PREFIX}/lib/libre2.so  # [linux]
     - test -f ${PREFIX}/lib/libre2.dylib  # [osx]
@@ -40,6 +47,14 @@ test:
     - if not exist %PREFIX%\\Library\\lib\\re2.lib exit 1  # [win]
     - if exist %PREFIX%\\Library\\lib\\re2_static.lib exit 1  # [win]
     - if not exist %PREFIX%\\Library\\bin\\re2.dll exit 1  # [win]
+
+    # CMake integration
+    - cd cmake_test
+    - cmake $CMAKE_ARGS  -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 .  # [unix]
+    - cmake %CMAKE_ARGS% -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 .  # [win]
+    - cmake --build .
+    - ./re2_example    # [unix]
+    - re2_example.exe  # [win]
 
 about:
   home: https://github.com/google/re2/
