@@ -1,10 +1,13 @@
 {% set name = "re2" %}
 {% set version = "2023-02-01" %}
 {% set dotversion = version.replace('-', '.') %}
+# switching from C++14 to C++17 unfortunately introduces a different ABI, see #61;
+# create a fake version bump so we can migrate the new version safely
+{% set abi_bump_version = dotversion.replace('.01', '.02') %}
 
 package:
   name: {{ name|lower }}
-  version: {{ dotversion }}
+  version: {{ abi_bump_version }}
 
 source:
   url: http://github.com/google/{{ name }}/archive/{{ version }}.tar.gz
@@ -27,6 +30,13 @@ requirements:
   run:
 
 test:
+  requires:
+    - {{ compiler('cxx') }}
+    - cmake
+    - libabseil
+    - ninja
+  files:
+    - cmake_test/
   commands:
     - test -f ${PREFIX}/lib/libre2.so  # [linux]
     - test -f ${PREFIX}/lib/libre2.dylib  # [osx]
@@ -37,6 +47,14 @@ test:
     - if not exist %PREFIX%\\Library\\lib\\re2.lib exit 1  # [win]
     - if exist %PREFIX%\\Library\\lib\\re2_static.lib exit 1  # [win]
     - if not exist %PREFIX%\\Library\\bin\\re2.dll exit 1  # [win]
+
+    # CMake integration
+    - cd cmake_test
+    - cmake $CMAKE_ARGS  -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 .  # [unix]
+    - cmake %CMAKE_ARGS% -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 .  # [win]
+    - cmake --build .
+    - ./re2_example    # [unix]
+    - re2_example.exe  # [win]
 
 about:
   home: https://github.com/google/re2/
