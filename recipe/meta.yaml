@@ -67,6 +67,7 @@ about:
 
 extra:
   recipe-maintainers:
+    - h-vetinari
     - scopatz
     - isuruf
     - wesm
