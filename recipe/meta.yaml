@@ -2,6 +2,10 @@
 {% set version = "2023-06-02" %}
 {% set dotversion = version.replace('-', '.') %}
 
+# see https://github.com/google/re2/blob/2023-06-01/CMakeLists.txt#L32-L34
+# changes more rarely than version
+{% set soversion = "11.0.0" %}
+
 package:
   name: {{ name|lower }}
   version: {{ dotversion }}
@@ -46,7 +50,7 @@ test:
     - if not exist %PREFIX%\\Library\\bin\\re2.dll exit 1  # [win]
 
     # test correctness of pkg-config metadata
-    - pkg-config --print-errors --exact-version "{{ version }}" re2
+    - pkg-config --print-errors --exact-version "{{ soversion }}" re2
 
     # CMake integration
     - cd cmake_test
