@@ -57,8 +57,7 @@ test:
 
     # CMake integration
     - cd cmake_test
-    - cmake $CMAKE_ARGS  -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 .  # [unix]
-    - cmake %CMAKE_ARGS% -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 .  # [win]
+    - cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 .
     - cmake --build .
     - ./re2_example    # [unix]
     - re2_example.exe  # [win]
