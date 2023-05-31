@@ -1,5 +1,5 @@
 {% set name = "re2" %}
-{% set version = "2023-03-01" %}
+{% set version = "2023-06-01" %}
 {% set dotversion = version.replace('-', '.') %}
 # switching from C++14 to C++17 unfortunately introduces a different ABI, see #61;
 # create a fake version bump so we can migrate the new version safely
@@ -11,7 +11,7 @@ package:
 
 source:
   url: http://github.com/google/{{ name }}/archive/{{ version }}.tar.gz
-  sha256: 7a9a4824958586980926a300b4717202485c4b4115ac031822e29aa4ef207e48
+  sha256: 8b4a8175da7205df2ad02e405a950a02eaa3e3e0840947cd598e92dca453199b
 
 build:
   number: 0
