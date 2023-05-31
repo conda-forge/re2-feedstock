@@ -19,7 +19,5 @@ cmake -GNinja \
     -DBUILD_SHARED_LIBS=ON \
     ..
 
-ninja install
-cd ..
-# Also do this installation to get .pc files. This duplicates the compilation but gets us all necessary components without patching.
-make -j "${CPU_COUNT}" prefix=${PREFIX} shared-install
+cmake --build .
+cmake --install .
