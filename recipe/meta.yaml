@@ -32,6 +32,7 @@ test:
     - {{ compiler('cxx') }}
     - cmake
     - ninja
+    - pkg-config
   files:
     - cmake_test/
   commands:
@@ -44,6 +45,9 @@ test:
     - if not exist %PREFIX%\\Library\\lib\\re2.lib exit 1  # [win]
     - if exist %PREFIX%\\Library\\lib\\re2_static.lib exit 1  # [win]
     - if not exist %PREFIX%\\Library\\bin\\re2.dll exit 1  # [win]
+
+    # test correctness of pkg-config metadata
+    - pkg-config --print-errors --exact-version "{{ version }}" re2
 
     # CMake integration
     - cd cmake_test
