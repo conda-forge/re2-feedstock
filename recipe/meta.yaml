@@ -24,13 +24,13 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
+    - libabseil
   run:
 
 test:
   requires:
     - {{ compiler('cxx') }}
     - cmake
-    - libabseil
     - ninja
   files:
     - cmake_test/
