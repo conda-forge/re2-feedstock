@@ -27,6 +27,9 @@ requirements:
     - {{ compiler('cxx') }}
   host:
     - libabseil
+    # only for build testing; these don't have run-exports
+    - benchmark  # [build_platform == target_platform]
+    - gtest      # [build_platform == target_platform]
   run:
 
 test:
