@@ -6,7 +6,7 @@
 {% set soversion = "11.0.0" %}
 
 package:
-  name: re2
+  name: re2-split
   version: {{ dotversion }}
 
 source:
@@ -16,8 +16,6 @@ source:
 build:
   number: 0
   detect_binary_files_with_prefix: true
-  run_exports:
-    - {{ pin_subpackage("re2", max_pin="x.x.x") }}
 
 requirements:
   build:
@@ -32,38 +30,50 @@ requirements:
     - gtest      # [build_platform == target_platform]
   run:
 
-test:
-  requires:
-    - {{ compiler('cxx') }}
-    - cmake
-    - ninja
-    - pkg-config
-  files:
-    - cmake_test/
-  commands:
-    # presence of shared libs
-    - test -f ${PREFIX}/lib/libre2.so               # [linux]
-    - test -f ${PREFIX}/lib/libre2.dylib            # [osx]
-    - if not exist %LIBRARY_BIN%\re2.dll exit 1     # [win]
-    - if not exist %LIBRARY_LIB%\re2.lib exit 1     # [win]
+outputs:
+  - name: re2
+    build:
+      run_exports:
+        - {{ pin_subpackage("re2", max_pin="x.x.x") }}
+    requirements:
+      build:
+        # for strong run-exports
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+      host:
+        - libabseil
+    test:
+      requires:
+        - {{ compiler('cxx') }}
+        - cmake
+        - ninja
+        - pkg-config
+      files:
+        - cmake_test/
+      commands:
+        # presence of shared libs
+        - test -f ${PREFIX}/lib/libre2.so               # [linux]
+        - test -f ${PREFIX}/lib/libre2.dylib            # [osx]
+        - if not exist %LIBRARY_BIN%\re2.dll exit 1     # [win]
+        - if not exist %LIBRARY_LIB%\re2.lib exit 1     # [win]
 
-    # absence of static libs
-    - test ! -f ${PREFIX}/lib/libre2.a              # [unix]
-    - if exist %LIBRARY_LIB%\re2_static.lib exit 1  # [win]
+        # absence of static libs
+        - test ! -f ${PREFIX}/lib/libre2.a              # [unix]
+        - if exist %LIBRARY_LIB%\re2_static.lib exit 1  # [win]
 
-    # presence of header
-    - test -f ${PREFIX}/include/re2/re2.h           # [unix]
-    - if not exist %LIBRARY_INC%\re2\re2.h exit 1   # [win]
+        # presence of header
+        - test -f ${PREFIX}/include/re2/re2.h           # [unix]
+        - if not exist %LIBRARY_INC%\re2\re2.h exit 1   # [win]
 
-    # test correctness of pkg-config metadata
-    - pkg-config --print-errors --exact-version "{{ soversion }}" re2
+        # test correctness of pkg-config metadata
+        - pkg-config --print-errors --exact-version "{{ soversion }}" re2
 
-    # CMake integration
-    - cd cmake_test
-    - cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 .
-    - cmake --build .
-    - ./re2_example    # [unix]
-    - re2_example.exe  # [win]
+        # CMake integration
+        - cd cmake_test
+        - cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 .
+        - cmake --build .
+        - ./re2_example    # [unix]
+        - re2_example.exe  # [win]
 
 about:
   home: https://github.com/google/re2/
@@ -83,3 +93,4 @@ extra:
     - xhochy
     - kszucs
     - pitrou
+  feedstock-name: re2
