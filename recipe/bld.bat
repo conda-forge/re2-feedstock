@@ -4,8 +4,8 @@
 set "CFLAGS= -MD"
 set "CXXFLAGS= -MD"
 
-mkdir -p cmake-build
-cd cmake-build
+mkdir -p build
+cd build
 
 cmake -G Ninja ^
     -DBUILD_SHARED_LIBS=ON ^

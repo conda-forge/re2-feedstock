@@ -9,8 +9,8 @@ if [[ "${target_platform}" == "${build_platform}" ]]; then
   export CMAKE_ARGS="${CMAKE_ARGS} -DRE2_BUILD_TESTING=ON"
 fi
 
-mkdir build-cmake
-cd build-cmake
+mkdir build
+cd build
 
 cmake -GNinja \
     ${CMAKE_ARGS} \
