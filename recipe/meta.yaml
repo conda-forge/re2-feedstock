@@ -1,6 +1,5 @@
 {% set version = "2023-06-02" %}
 {% set dotversion = version.replace('-', '.') %}
-{% set build_num = 0 %}
 
 # see https://github.com/google/re2/blob/2023-06-01/CMakeLists.txt#L32-L34
 # changes more rarely than version
@@ -15,7 +14,7 @@ source:
   sha256: 4ccdd5aafaa1bcc24181e6dd3581c3eee0354734bb9f3cb4306273ffa434b94f
 
 build:
-  number: {{ build_num }}
+  number: 0
   detect_binary_files_with_prefix: true
 
 requirements:
@@ -93,7 +92,7 @@ outputs:
       host:
         - libabseil
       run_constrained:
-        - re2 {{ version }} *_{{ build_num }}
+        - re2 {{ version }} *_{{ PKG_BUILDNUM }}
     test:
       commands:
         # presence of versioned shared lib (unix) & plain dll (win)
