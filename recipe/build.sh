@@ -29,5 +29,3 @@ if [[ "${target_platform}" == "${build_platform}" ]]; then
     # https://github.com/google/re2/blob/main/.github/cmake.sh
     ctest --output-on-failure -E "dfa|exhaustive|random"
 fi
-
-cmake --install .

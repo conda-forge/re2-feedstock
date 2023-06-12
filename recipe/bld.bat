@@ -22,6 +22,3 @@ if %ERRORLEVEL% neq 0 exit 1
 :: same test filter as upstream uses, see build.sh
 ctest --output-on-failure -E "dfa|exhaustive|random"
 if %ERRORLEVEL% neq 0 exit 1
-
-cmake --install .
-if %ERRORLEVEL% neq 0 exit 1

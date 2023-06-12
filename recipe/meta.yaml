@@ -1,9 +1,10 @@
 {% set version = "2023-06-02" %}
 {% set dotversion = version.replace('-', '.') %}
+{% set build_num = 0 %}
 
 # see https://github.com/google/re2/blob/2023-06-01/CMakeLists.txt#L32-L34
 # changes more rarely than version
-{% set soversion = "11.0.0" %}
+{% set soversion = "11" %}
 
 package:
   name: re2-split
@@ -14,7 +15,7 @@ source:
   sha256: 4ccdd5aafaa1bcc24181e6dd3581c3eee0354734bb9f3cb4306273ffa434b94f
 
 build:
-  number: 0
+  number: {{ build_num }}
   detect_binary_files_with_prefix: true
 
 requirements:
@@ -28,20 +29,23 @@ requirements:
     # only for build testing; these don't have run-exports
     - benchmark  # [build_platform == target_platform]
     - gtest      # [build_platform == target_platform]
-  run:
 
 outputs:
+  # re2 has a rarely-changing SOVERSION, and it's enough to depend on
+  # (and run-export) the output that contains the library artefact
   - name: re2
+    script: install.sh   # [unix]
+    script: install.bat  # [win]
     build:
       run_exports:
-        - {{ pin_subpackage("re2", max_pin="x.x.x") }}
+        - {{ pin_subpackage("libre2-" ~ soversion) }}
     requirements:
       build:
-        # for strong run-exports
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
+        - cmake
       host:
-        - libabseil
+        - {{ pin_subpackage("libre2-" ~ soversion, exact=True) }}
+      run:
+        - {{ pin_subpackage("libre2-" ~ soversion, exact=True) }}
     test:
       requires:
         - {{ compiler('cxx') }}
@@ -51,10 +55,9 @@ outputs:
       files:
         - cmake_test/
       commands:
-        # presence of shared libs
+        # presence of shared libs (unix) & import lib (win)
         - test -f ${PREFIX}/lib/libre2.so               # [linux]
         - test -f ${PREFIX}/lib/libre2.dylib            # [osx]
-        - if not exist %LIBRARY_BIN%\re2.dll exit 1     # [win]
         - if not exist %LIBRARY_LIB%\re2.lib exit 1     # [win]
 
         # absence of static libs
@@ -66,7 +69,7 @@ outputs:
         - if not exist %LIBRARY_INC%\re2\re2.h exit 1   # [win]
 
         # test correctness of pkg-config metadata
-        - pkg-config --print-errors --exact-version "{{ soversion }}" re2
+        - pkg-config --print-errors --exact-version "{{ soversion }}.0.0" re2
 
         # CMake integration
         - cd cmake_test
@@ -74,6 +77,34 @@ outputs:
         - cmake --build .
         - ./re2_example    # [unix]
         - re2_example.exe  # [win]
+
+    # the versioned library artefact
+  - name: libre2-{{ soversion }}
+    script: install.sh   # [unix]
+    script: install.bat  # [win]
+    build:
+      run_exports:
+        - {{ pin_subpackage("libre2-" ~ soversion) }}
+    requirements:
+      build:
+        # for strong run-exports
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+      host:
+        - libabseil
+      run_constrained:
+        - re2 {{ version }} *_{{ build_num }}
+    test:
+      commands:
+        # presence of versioned shared lib (unix) & plain dll (win)
+        - test -f ${PREFIX}/lib/libre2.so.{{ soversion }}       # [linux]
+        - test -f ${PREFIX}/lib/libre2.{{ soversion }}.dylib    # [osx]
+        - if not exist %LIBRARY_BIN%\re2.dll exit 1             # [win]
+
+        # absence of unversioned shared lib (unix) & import lib (win)
+        - test ! -f ${PREFIX}/lib/libre2.so             # [linux]
+        - test ! -f ${PREFIX}/lib/libre2.dylib          # [osx]
+        - if exist %LIBRARY_LIB%\re2.lib exit 1         # [win]
 
 about:
   home: https://github.com/google/re2/
