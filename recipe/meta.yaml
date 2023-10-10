@@ -4,8 +4,6 @@
 # see https://github.com/google/re2/blob/2023-06-01/CMakeLists.txt#L32-L34
 # changes more rarely than version
 {% set soversion = "11" %}
-# if you change the soversion, you MUST update the below to avoid broken metadata
-{% set soversion_last_updated = "2023.06.02" %}
 
 package:
   name: re2-split
@@ -41,8 +39,8 @@ outputs:
       run_exports:
         - {{ pin_subpackage("libre2-" ~ soversion) }}
         # by adding this run-export, we avoid that different libre2-{X,Y} builds
-        # can be co-installed, because they have a non-overlapping range for the
-        # allowed re2-version (see below) and each re2 requires a specific soversion
+        # can be co-installed, because they then depend on different re2-versions
+        # (see below), and each re2 in turn requires a specific soversion.
         - re2
     requirements:
       build:
@@ -98,8 +96,8 @@ outputs:
       host:
         - libabseil
       run_constrained:
-        # keep expanding the valid range until the soversion gets bumped
-        - re2 >={{ soversion_last_updated }},<={{ dotversion }}
+        # this ensures that libre2-{X,Y} cannot be co-installed, see above
+        - re2 {{ dotversion }}.*
     test:
       commands:
         # presence of versioned shared lib (unix) & plain dll (win)
