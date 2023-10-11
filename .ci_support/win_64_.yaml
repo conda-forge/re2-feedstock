@@ -7,6 +7,8 @@ channel_targets:
 cxx_compiler:
 - vs2019
 libabseil:
-- '20220623.0'
+- '20230802'
+re2:
+- 2023.03.02
 target_platform:
 - win-64

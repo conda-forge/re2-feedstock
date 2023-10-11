@@ -1,60 +1,114 @@
-{% set name = "re2" %}
-{% set version = "2023-03-01" %}
+{% set version = "2023-06-02" %}
 {% set dotversion = version.replace('-', '.') %}
-# switching from C++14 to C++17 unfortunately introduces a different ABI, see #61;
-# create a fake version bump so we can migrate the new version safely
-{% set abi_bump_version = dotversion.replace('.01', '.02') %}
+
+# see https://github.com/google/re2/blob/2023-06-01/CMakeLists.txt#L32-L34
+# changes more rarely than version
+{% set soversion = "11" %}
 
 package:
-  name: {{ name|lower }}
-  version: {{ abi_bump_version }}
+  name: re2-split
+  version: {{ dotversion }}
 
 source:
-  url: http://github.com/google/{{ name }}/archive/{{ version }}.tar.gz
-  sha256: 7a9a4824958586980926a300b4717202485c4b4115ac031822e29aa4ef207e48
+  url: http://github.com/google/re2/archive/{{ version }}.tar.gz
+  sha256: 4ccdd5aafaa1bcc24181e6dd3581c3eee0354734bb9f3cb4306273ffa434b94f
 
 build:
   number: 0
   detect_binary_files_with_prefix: true
-  run_exports:
-    - {{ pin_subpackage("re2", max_pin="x.x.x") }}
 
 requirements:
   build:
     - cmake
-    - make
     - ninja
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
-  run:
-
-test:
-  requires:
-    - {{ compiler('cxx') }}
-    - cmake
     - libabseil
-    - ninja
-  files:
-    - cmake_test/
-  commands:
-    - test -f ${PREFIX}/lib/libre2.so  # [linux]
-    - test -f ${PREFIX}/lib/libre2.dylib  # [osx]
-    - test ! -f ${PREFIX}/lib/libre2.a  # [unix]
-    - test -f ${PREFIX}/lib/pkgconfig/re2.pc  # [unix]
-    - test -f ${PREFIX}/include/re2/re2.h  # [unix]
-    - if not exist %PREFIX%\\Library\\include\\re2\\re2.h exit 1  # [win]
-    - if not exist %PREFIX%\\Library\\lib\\re2.lib exit 1  # [win]
-    - if exist %PREFIX%\\Library\\lib\\re2_static.lib exit 1  # [win]
-    - if not exist %PREFIX%\\Library\\bin\\re2.dll exit 1  # [win]
+    # only for build testing; these don't have run-exports
+    - benchmark  # [build_platform == target_platform]
+    - gtest      # [build_platform == target_platform]
 
-    # CMake integration
-    - cd cmake_test
-    - cmake $CMAKE_ARGS  -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 .  # [unix]
-    - cmake %CMAKE_ARGS% -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 .  # [win]
-    - cmake --build .
-    - ./re2_example    # [unix]
-    - re2_example.exe  # [win]
+outputs:
+  # re2 has a rarely-changing SOVERSION, and it's enough to depend on
+  # (and run-export) the output that contains the library artefact
+  - name: re2
+    script: install.sh   # [unix]
+    script: install.bat  # [win]
+    build:
+      run_exports:
+        - {{ pin_subpackage("libre2-" ~ soversion) }}
+        # by adding this run-export, we avoid that different libre2-{X,Y} builds
+        # can be co-installed, because they then depend on different re2-versions
+        # (see below), and each re2 in turn requires a specific soversion.
+        - re2
+    requirements:
+      build:
+        - cmake
+      host:
+        - {{ pin_subpackage("libre2-" ~ soversion, exact=True) }}
+      run:
+        - {{ pin_subpackage("libre2-" ~ soversion, exact=True) }}
+    test:
+      requires:
+        - {{ compiler('cxx') }}
+        - cmake
+        - ninja
+        - pkg-config
+      files:
+        - cmake_test/
+      commands:
+        # presence of shared libs (unix) & import lib (win)
+        - test -f ${PREFIX}/lib/libre2.so               # [linux]
+        - test -f ${PREFIX}/lib/libre2.dylib            # [osx]
+        - if not exist %LIBRARY_LIB%\re2.lib exit 1     # [win]
+
+        # absence of static libs
+        - test ! -f ${PREFIX}/lib/libre2.a              # [unix]
+        - if exist %LIBRARY_LIB%\re2_static.lib exit 1  # [win]
+
+        # presence of header
+        - test -f ${PREFIX}/include/re2/re2.h           # [unix]
+        - if not exist %LIBRARY_INC%\re2\re2.h exit 1   # [win]
+
+        # test correctness of pkg-config metadata
+        - pkg-config --print-errors --exact-version "{{ soversion }}.0.0" re2
+
+        # CMake integration
+        - cd cmake_test
+        - cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 .
+        - cmake --build .
+        - ./re2_example    # [unix]
+        - re2_example.exe  # [win]
+
+    # the versioned library artefact
+  - name: libre2-{{ soversion }}
+    script: install.sh   # [unix]
+    script: install.bat  # [win]
+    build:
+      run_exports:
+        - {{ pin_subpackage("libre2-" ~ soversion) }}
+    requirements:
+      build:
+        # for strong run-exports
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+      host:
+        - libabseil
+      run_constrained:
+        # this ensures that libre2-{X,Y} cannot be co-installed, see above
+        - re2 {{ dotversion }}.*
+    test:
+      commands:
+        # presence of versioned shared lib (unix) & plain dll (win)
+        - test -f ${PREFIX}/lib/libre2.so.{{ soversion }}       # [linux]
+        - test -f ${PREFIX}/lib/libre2.{{ soversion }}.dylib    # [osx]
+        - if not exist %LIBRARY_BIN%\re2.dll exit 1             # [win]
+
+        # absence of unversioned shared lib (unix) & import lib (win)
+        - test ! -f ${PREFIX}/lib/libre2.so             # [linux]
+        - test ! -f ${PREFIX}/lib/libre2.dylib          # [osx]
+        - if exist %LIBRARY_LIB%\re2.lib exit 1         # [win]
 
 about:
   home: https://github.com/google/re2/
@@ -74,3 +128,4 @@ extra:
     - xhochy
     - kszucs
     - pitrou
+  feedstock-name: re2

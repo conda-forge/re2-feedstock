@@ -85,6 +85,7 @@ Current release info
 
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libre2--11-green.svg)](https://anaconda.org/conda-forge/libre2-11) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libre2-11.svg)](https://anaconda.org/conda-forge/libre2-11) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libre2-11.svg)](https://anaconda.org/conda-forge/libre2-11) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libre2-11.svg)](https://anaconda.org/conda-forge/libre2-11) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-re2-green.svg)](https://anaconda.org/conda-forge/re2) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/re2.svg)](https://anaconda.org/conda-forge/re2) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/re2.svg)](https://anaconda.org/conda-forge/re2) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/re2.svg)](https://anaconda.org/conda-forge/re2) |
 
 Installing re2
@@ -97,41 +98,41 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `re2` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `libre2-11, re2` can be installed with `conda`:
 
 ```
-conda install re2
-```
-
-or with `mamba`:
-
-```
-mamba install re2
-```
-
-It is possible to list all of the versions of `re2` available on your platform with `conda`:
-
-```
-conda search re2 --channel conda-forge
+conda install libre2-11 re2
 ```
 
 or with `mamba`:
 
 ```
-mamba search re2 --channel conda-forge
+mamba install libre2-11 re2
+```
+
+It is possible to list all of the versions of `libre2-11` available on your platform with `conda`:
+
+```
+conda search libre2-11 --channel conda-forge
+```
+
+or with `mamba`:
+
+```
+mamba search libre2-11 --channel conda-forge
 ```
 
 Alternatively, `mamba repoquery` may provide more information:
 
 ```
 # Search all versions available on your platform:
-mamba repoquery search re2 --channel conda-forge
+mamba repoquery search libre2-11 --channel conda-forge
 
-# List packages depending on `re2`:
-mamba repoquery whoneeds re2 --channel conda-forge
+# List packages depending on `libre2-11`:
+mamba repoquery whoneeds libre2-11 --channel conda-forge
 
-# List dependencies of `re2`:
-mamba repoquery depends re2 --channel conda-forge
+# List dependencies of `libre2-11`:
+mamba repoquery depends libre2-11 --channel conda-forge
 ```
 
 
@@ -201,6 +202,7 @@ In order to produce a uniquely identifiable distribution:
 Feedstock Maintainers
 =====================
 
+* [@h-vetinari](https://github.com/h-vetinari/)
 * [@isuruf](https://github.com/isuruf/)
 * [@kszucs](https://github.com/kszucs/)
 * [@pitrou](https://github.com/pitrou/)

@@ -4,24 +4,21 @@
 set "CFLAGS= -MD"
 set "CXXFLAGS= -MD"
 
-mkdir -p cmake-build
-cd cmake-build
-set "VS_VERSION=14.0"
-set "VS_MAJOR=14"
-set "VS_YEAR=2015"
-cmake -DBUILD_SHARED_LIBS=ON ^
-      -DCMAKE_CXX_STANDARD=17 ^
-      -DCMAKE_BUILD_TYPE=Release ^
-      -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
-      -G "NMake Makefiles" ^
-      %SRC_DIR%
-if errorlevel 1 exit 1
+mkdir -p build
+cd build
 
-nmake
-if errorlevel 1 exit 1
+cmake -G Ninja ^
+    -DBUILD_SHARED_LIBS=ON ^
+    -DCMAKE_CXX_STANDARD=17 ^
+    -DCMAKE_BUILD_TYPE=Release ^
+    -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
+    -DRE2_BUILD_TESTING=ON ^
+    ..
+if %ERRORLEVEL% neq 0 exit 1
 
-ctest -E "dfa|exhaustive|random"
-if errorlevel 1 exit 1
+cmake --build .
+if %ERRORLEVEL% neq 0 exit 1
 
-nmake install
-if errorlevel 1 exit 1
+:: same test filter as upstream uses, see build.sh
+ctest --output-on-failure -E "dfa|exhaustive|random"
+if %ERRORLEVEL% neq 0 exit 1
