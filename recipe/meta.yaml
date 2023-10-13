@@ -14,7 +14,7 @@ source:
   sha256: 4ccdd5aafaa1bcc24181e6dd3581c3eee0354734bb9f3cb4306273ffa434b94f
 
 build:
-  number: 0
+  number: 1
   detect_binary_files_with_prefix: true
 
 requirements:
@@ -38,10 +38,6 @@ outputs:
     build:
       run_exports:
         - {{ pin_subpackage("libre2-" ~ soversion) }}
-        # by adding this run-export, we avoid that different libre2-{X,Y} builds
-        # can be co-installed, because they then depend on different re2-versions
-        # (see below), and each re2 in turn requires a specific soversion.
-        - re2
     requirements:
       build:
         - cmake
@@ -95,8 +91,10 @@ outputs:
         - {{ compiler('cxx') }}
       host:
         - libabseil
-      run_constrained:
-        # this ensures that libre2-{X,Y} cannot be co-installed, see above
+      run:
+        # this ensures that libre2-{X,Y} cannot be co-installed, because they
+        # then depend on different re2-versions, and each re2 in turn depends
+        # exactly on a specific SOVERSION, i.e. _either_ -X or -Y; see also #72
         - re2 {{ dotversion }}.*
     test:
       commands:
