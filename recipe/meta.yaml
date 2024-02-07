@@ -1,4 +1,4 @@
-{% set version = "2023-06-02" %}
+{% set version = "2023-09-01" %}
 {% set dotversion = version.replace('-', '.') %}
 
 # see https://github.com/google/re2/blob/2023-06-01/CMakeLists.txt#L32-L34
@@ -11,10 +11,10 @@ package:
 
 source:
   url: http://github.com/google/re2/archive/{{ version }}.tar.gz
-  sha256: 4ccdd5aafaa1bcc24181e6dd3581c3eee0354734bb9f3cb4306273ffa434b94f
+  sha256: 5bb6875ae1cd1e9fedde98018c346db7260655f86fdb8837e3075103acd3649b
 
 build:
-  number: 1
+  number: 0
   detect_binary_files_with_prefix: true
 
 requirements:
