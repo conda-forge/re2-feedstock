@@ -19,9 +19,9 @@ cxx_compiler_version:
 docker_image:
 - quay.io/condaforge/linux-anvil-cos7-x86_64
 libabseil:
-- '20240116'
+- '20230802'
 re2:
-- 2023.06.02
+- 2023.09.01
 target_platform:
 - linux-aarch64
 zip_keys:
