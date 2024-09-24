@@ -21,6 +21,7 @@ requirements:
   build:
     - cmake
     - ninja
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
@@ -91,6 +92,7 @@ outputs:
     requirements:
       build:
         # for strong run-exports
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
       host:
