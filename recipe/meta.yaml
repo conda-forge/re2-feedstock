@@ -1,4 +1,4 @@
-{% set version = "2024-04-01" %}
+{% set version = "2024-07-02" %}
 {% set dotversion = version.replace('-', '.') %}
 
 # see https://github.com/google/re2/blob/2023-06-01/CMakeLists.txt#L32-L34
@@ -11,7 +11,7 @@ package:
 
 source:
   url: http://github.com/google/re2/archive/{{ version }}.tar.gz
-  sha256: 3f6690c3393a613c3a0b566309cf04dc381d61470079b653afc47c67fb898198
+  sha256: eb2df807c781601c14a260a507a5bb4509be1ee626024cb45acbd57cb9d4032b
 
 build:
   number: 0
