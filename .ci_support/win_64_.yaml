@@ -1,5 +1,7 @@
 c_compiler:
 - vs2019
+c_stdlib:
+- vs
 channel_sources:
 - conda-forge
 channel_targets:
@@ -7,7 +9,7 @@ channel_targets:
 cxx_compiler:
 - vs2019
 libabseil:
-- '20240116'
+- '20240722'
 re2:
 - 2023.09.01
 target_platform:
