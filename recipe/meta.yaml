@@ -14,7 +14,7 @@ source:
   sha256: eb2df807c781601c14a260a507a5bb4509be1ee626024cb45acbd57cb9d4032b
 
 build:
-  number: 0
+  number: 1
   detect_binary_files_with_prefix: true
 
 requirements:
@@ -38,7 +38,7 @@ outputs:
     script: install.bat  # [win]
     build:
       run_exports:
-        - {{ pin_subpackage("libre2-" ~ soversion) }}
+        - {{ pin_subpackage("libre2-" ~ soversion, max_pin=None) }}
         # by adding this run-export, we avoid that different libre2-{X,Y} builds
         # can be co-installed, because they then depend on different re2-versions
         # (see below), and each re2 in turn requires a specific soversion.
@@ -88,7 +88,7 @@ outputs:
     script: install.bat  # [win]
     build:
       run_exports:
-        - {{ pin_subpackage("libre2-" ~ soversion) }}
+        - {{ pin_subpackage("libre2-" ~ soversion, max_pin=None) }}
     requirements:
       build:
         # for strong run-exports
