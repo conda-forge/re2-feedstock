@@ -1,5 +1,5 @@
 ace:
-- 8.0.1
+- 8.0.2
 c_compiler:
 - vs2019
 c_stdlib:
@@ -13,6 +13,6 @@ cxx_compiler:
 libabseil:
 - '20240722'
 re2:
-- 2023.09.01
+- 2024.07.02
 target_platform:
 - win-64
