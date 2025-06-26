@@ -1,4 +1,4 @@
-{% set version = "2024-07-02" %}
+{% set version = "2025-06-26" %}
 {% set dotversion = version.replace('-', '.') %}
 
 # see https://github.com/google/re2/blob/2023-06-01/CMakeLists.txt#L32-L34
@@ -11,10 +11,10 @@ package:
 
 source:
   url: http://github.com/google/re2/archive/{{ version }}.tar.gz
-  sha256: eb2df807c781601c14a260a507a5bb4509be1ee626024cb45acbd57cb9d4032b
+  sha256: 6090fc23a189e1a04a0e751b4f285922a794a39b6ecc6670b6141af74c82fe08
 
 build:
-  number: 4
+  number: 0
   detect_binary_files_with_prefix: true
 
 requirements:
@@ -34,7 +34,7 @@ outputs:
   # re2 has a rarely-changing SOVERSION, and it's enough to depend on
   # (and run-export) the output that contains the library artefact
   - name: re2
-    script: install.sh   # [unix]
+    script: install.sh  # [unix]
     script: install.bat  # [win]
     build:
       run_exports:
@@ -84,7 +84,7 @@ outputs:
 
     # the versioned library artefact
   - name: libre2-{{ soversion }}
-    script: install.sh   # [unix]
+    script: install.sh  # [unix]
     script: install.bat  # [win]
     build:
       run_exports:
