@@ -11,8 +11,8 @@ channel_targets:
 cxx_compiler:
 - vs2022
 libabseil:
-- '20250814'
+- '20250512'
 re2:
-- 2024.07.02
+- 2025.08.12
 target_platform:
 - win-64
