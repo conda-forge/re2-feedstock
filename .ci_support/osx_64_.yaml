@@ -21,11 +21,11 @@ cxx_compiler:
 cxx_compiler_version:
 - '19'
 libabseil:
-- '20250814'
+- '20250512'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 re2:
-- 2024.07.02
+- 2025.08.12
 target_platform:
 - osx-64
 zip_keys:
