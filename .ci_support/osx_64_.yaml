@@ -2,8 +2,6 @@ MACOSX_DEPLOYMENT_TARGET:
 - '11.0'
 MACOSX_SDK_VERSION:
 - '11.0'
-ace:
-- 8.0.5
 c_compiler:
 - clang
 c_compiler_version:
@@ -21,7 +19,7 @@ cxx_compiler:
 cxx_compiler_version:
 - '19'
 libabseil:
-- '20250512'
+- '20260107'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 re2:
