@@ -1,5 +1,3 @@
-ace:
-- 8.0.5
 c_compiler:
 - vs2022
 c_stdlib:
@@ -11,7 +9,7 @@ channel_targets:
 cxx_compiler:
 - vs2022
 libabseil:
-- '20250512'
+- '20260107'
 re2:
 - 2025.08.12
 target_platform:
