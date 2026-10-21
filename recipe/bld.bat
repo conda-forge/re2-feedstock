@@ -7,7 +7,7 @@ set "CXXFLAGS= -MD"
 mkdir -p build
 cd build
 
-cmake -G Ninja ^
+cmake %CMAKE_ARGS% -G Ninja ^
     -DBUILD_SHARED_LIBS=ON ^
     -DCMAKE_CXX_STANDARD=17 ^
     -DCMAKE_BUILD_TYPE=Release ^
@@ -20,5 +20,7 @@ cmake --build .
 if %ERRORLEVEL% neq 0 exit 1
 
 :: same test filter as upstream uses, see build.sh
+if not "%CONDA_BUILD_SKIP_TESTS%"=="1" (
 ctest --output-on-failure -E "dfa|exhaustive|random"
+)
 if %ERRORLEVEL% neq 0 exit 1
