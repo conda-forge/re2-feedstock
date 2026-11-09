@@ -5,7 +5,7 @@ if [[ "${target_platform}" == osx-* ]]; then
   export CXXFLAGS="${CXXFLAGS} -DTARGET_OS_OSX=1"
 fi
 
-if [[ "${target_platform}" == "${build_platform}" ]]; then
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR:-}" != "" ]]; then
   export CMAKE_ARGS="${CMAKE_ARGS} -DRE2_BUILD_TESTING=ON"
 fi
 
@@ -24,7 +24,7 @@ cmake -GNinja \
 
 cmake --build .
 
-if [[ "${target_platform}" == "${build_platform}" ]]; then
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR:-}" != "" ]]; then
     # same test filter as upstream uses, see
     # https://github.com/google/re2/blob/main/.github/cmake.sh
     ctest --output-on-failure -E "dfa|exhaustive|random"
